@@ -28,6 +28,9 @@ uuid = "1.6.1"
 tauri-plugin-autostart = "2.0.0-beta"
 window-shadows = "0.2.2"
 tauri-plugin-process = "2.0.0-beta.4"
+# To be used instead of tauri directories, since we do not always have the context of the `app`, which tauri requires in the v2 API.
+dirs-next = "2.0.0"
+
 
 [features]
 # by default Tauri runs in production mode

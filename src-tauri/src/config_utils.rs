@@ -5,8 +5,7 @@ use std::{
     io::Write,
 };
 use tauri::{
-    api::path::data_dir, CustomMenuItem, GlobalShortcutManager, SystemTrayMenu, SystemTrayMenuItem,
-    SystemTraySubmenu,
+    CustomMenuItem, GlobalShortcutManager, SystemTrayMenu, SystemTrayMenuItem, SystemTraySubmenu,
 };
 
 static CONFIG_FILE_NAME: &str = "idasen-tray-config.json";
@@ -31,7 +30,7 @@ pub struct ConfigData {
 }
 
 fn get_config_path() -> String {
-    let mut dir = data_dir()
+    let mut dir = dirs_next::data_dir()
         .expect("Error whiel unwrapping data directory")
         .to_str()
         .expect("err")

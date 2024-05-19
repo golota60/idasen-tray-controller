@@ -20,7 +20,9 @@ mod tray_utils;
 
 pub struct TauriSharedDesk(Mutex<Result<PlatformPeripheral, BtError>>);
 
-// Whether a system should have custom decorations or not
+/// Whether a system has custom decoration created for them. 
+/// Currently, only windows has them, cause we want to override the ugly default borders. 
+/// On other systems it's not as bad.
 #[tauri::command]
 fn has_custom_decorations() -> bool {
     if cfg!(windows) {
@@ -34,6 +36,7 @@ pub trait WindowInitUtils {
 } 
 
 impl  <R: Runtime, M: tauri::Manager<R>>WindowInitUtils for WebviewWindowBuilder<'_, R, M> {
+    /// Common function to initialize all the required things for the main window.
     fn init_trayasen(self, title: &str, err_msg: &str, init_script: Option<&str>) -> Window {
         // We want to replace borders only on windows, as on macOS they are pretty enough, and on Linux it's not supported by `window_shadows`
         let mut window_builder = if has_custom_decorations() {
