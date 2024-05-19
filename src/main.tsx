@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { appWindow } from "@tauri-apps/api/window";
+import { appWindow } from "@tauri-apps/api/webviewWindow";
 import App from "./App";
 import "./style.css";
 import { hasCustomDecorations } from "./rustUtils";

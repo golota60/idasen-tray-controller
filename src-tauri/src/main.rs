@@ -8,8 +8,9 @@ use loose_idasen::BtError;
 use tauri_plugin_autostart::MacosLauncher;
 
 use btleplug::platform::Peripheral as PlatformPeripheral;
-use tauri::{GlobalShortcutManager, Window, WindowBuilder};
+use tauri::{Runtime, Window, WebviewWindowBuilder};
 use tauri::{async_runtime::block_on, Manager, SystemTray, SystemTrayEvent};
+use tauri_plugin_global_shortcut::GlobalShortcutExt;
 use window_shadows::set_shadow;
 
 mod desk_mutex;
@@ -29,10 +30,10 @@ fn has_custom_decorations() -> bool {
 }
 
 pub trait WindowInitUtils {
-    fn init_trayasen(self, title: &str, err_msg: &str, init_script: Option<&str>) -> Window;
+    fn init_trayasen(self, title: &str, err_msg: &str, init_script: Option<&str>) -> WebviewWindow<impl Runtime>;
 } 
 
-impl WindowInitUtils for WindowBuilder<'_> {
+impl  <R: Runtime, M: tauri::Manager<R>>WindowInitUtils for WebviewWindowBuilder<'_, R, M> {
     fn init_trayasen(self, title: &str, err_msg: &str, init_script: Option<&str>) -> Window {
         // We want to replace borders only on windows, as on macOS they are pretty enough, and on Linux it's not supported by `window_shadows`
         let mut window_builder = if has_custom_decorations() {
@@ -62,7 +63,7 @@ fn create_new_elem(
     shortcutvalue: Option<String>,
 ) -> String {
     let mut config = config_utils::get_config();
-    let mut shortcut_manager = app_handle.global_shortcut_manager();
+    let mut shortcut_manager = app_handle.global_shortcut();
 
     println!("shortcut_acc: {:?}", shortcutvalue);
 
@@ -206,7 +207,7 @@ fn main() {
                             }
                         }
                         Err(e) => {
-                            let err_window = tauri::WindowBuilder::new(app, "init_window", tauri::WindowUrl::App("index.html".into())).init_trayasen("Trayasen - Woops!","Error while creating window", None);
+                            let err_window = tauri::WebviewWindowBuilder::new(app, "init_window", tauri::WebviewUrl::App("index.html".into())).init_trayasen("Trayasen - Woops!","Error while creating window", None);
                             
                             // Open error window with the error
                             println!("opening error window! error: {}", e);
@@ -228,7 +229,7 @@ fn main() {
                     }
                 }
                 None => {
-                    let init_window = tauri::WindowBuilder::new(app, "main", tauri::WindowUrl::App("index.html".into())).init_trayasen("Trayasen - Setup", "Error while creating window", None);
+                    let init_window = tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("index.html".into())).init_trayasen("Trayasen - Setup", "Error while creating window", None);
                     
                     // If loc_name doesn't exist, that means there's no saved desk - meaning we need to show the initial setup window
                     init_window

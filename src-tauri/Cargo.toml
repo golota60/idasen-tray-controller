@@ -6,24 +6,25 @@ authors = ["Szymon Wiszczuk<szymon.wiszczuk@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/golota60/trayasen"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.76"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.0", features = [] }
+tauri-build = { version = "2.0.0-beta", features = [] }
 
 [dependencies]
 serde = "1.0.193"
 serde_derive = "1.0.193"
 serde_json = "1.0.108"
-tauri = { version = "1.5.3", features = ["api-all", "system-tray", "global-shortcut"] }
+tauri = { version = "2.0.0-beta", features = ["tray-icon"] }
 btleplug = "0.11.3"
 tokio = { version = "1.35.0", features = ["full"] }
 thiserror = "1.0.50"
 uuid = "1.6.1"
-tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-autostart = "2.0.0-beta"
 window-shadows = "0.2.2"
+tauri-plugin-process = "2.0.0-beta.4"
 
 [features]
 # by default Tauri runs in production mode

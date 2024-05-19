@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { appWindow } from "@tauri-apps/api/window";
+import { appWindow } from "@tauri-apps/api/webviewWindow";
 import { Button } from "./generic/button";
 import { Input } from "./generic/input";
 import { MAX_HEIGHT, MIN_HEIGHT } from "./utils";

@@ -1,5 +1,5 @@
 import useSimpleAsync from "use-simple-async";
-import { appWindow } from "@tauri-apps/api/window";
+import { appWindow } from "@tauri-apps/api/webviewWindow";
 import { Link } from "found";
 import { Button } from "./generic/button";
 import removeIcon from "./assets/cross.svg";
