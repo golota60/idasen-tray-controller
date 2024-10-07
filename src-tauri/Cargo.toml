@@ -6,24 +6,32 @@ authors = ["Szymon Wiszczuk<szymon.wiszczuk@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/golota60/trayasen"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.77"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.0", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
 serde = "1.0.193"
 serde_derive = "1.0.193"
 serde_json = "1.0.108"
-tauri = { version = "1.5.3", features = ["api-all", "system-tray", "global-shortcut"] }
+tauri = { version = "2", features = ["tray-icon"] }
 btleplug = "0.11.3"
 tokio = { version = "1.35.0", features = ["full"] }
 thiserror = "1.0.50"
 uuid = "1.6.1"
-tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-autostart = { version = "2" }
 window-shadows = "0.2.2"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-os = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-clipboard-manager = "2.0.1"
+tauri-plugin-process = "2"
+tauri-plugin-http = "2"
 
 [features]
 # by default Tauri runs in production mode
@@ -32,3 +40,7 @@ default = ["custom-protocol"]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
 custom-protocol = ["tauri/custom-protocol"]
+
+[target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
+tauri-plugin-autostart = "2"
+tauri-plugin-global-shortcut = "2"
