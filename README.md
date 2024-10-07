@@ -85,16 +85,16 @@ Here are the errors that might happen to you. If you don't see your error(or a f
 
 On Windows, this means that this is the first time your computer is connecting to your desk, and has not been set up properly yet.
 
-Fix 1: 
-1. While connecting to the desk inside the app(essentially, clicking "Connect" button), you should see a windows popup(in the lower right corner of your screen) with the text saying - "Tap to set up Desk XXXX". 
-2. Click on that, and select "Allow". 
+Fix 1:
+1. While connecting to the desk inside the app(essentially, clicking "Connect" button), you should see a windows popup(in the lower right corner of your screen) with the text saying - "Tap to set up Desk XXXX".
+2. Click on that, and select "Allow".
 3. After that, click "Reset config & restart the app" in the Trayasen app. After this, the next connection to your desk should be successful.
 
 Fix 2:
-1. In bluetooth settings, set the following option to "Advanced" 
+1. In bluetooth settings, set the following option to "Advanced"
 <img src="https://github.com/golota60/trayasen/blob/master/win-bluetooth.png">
 
-1. Next, try adding a bluetooth device. You should see your desk with the name `Desk XXXX`. Connect to it. After successful connection, you should be able to connect to it from Trayasen. 
+1. Next, try adding a bluetooth device. You should see your desk with the name `Desk XXXX`. Connect to it. After successful connection, you should be able to connect to it from Trayasen.
 
 - `Desk connection not initiated`
 
@@ -104,7 +104,7 @@ This is a signal from an application, that we're trying to perform a bluetooth o
 
 This usually means that the desk you're trying to connect to, is refusing the connection. Usually, the most common fix is to hold down the bluetooth button you have on the desk handle, until the blue light starts flashing, and then retrying the connection.
 
-- `Cannot find the device` 
+- `Cannot find the device`
 
 This usually means, that your saved desk is not visible to your PC's bluetooth. Usually, the most common fix is to hold down the bluetooth button you have on the desk handle, until the blue light starts flashing, and then retrying the connection.
 
@@ -112,7 +112,7 @@ This usually means, that your saved desk is not visible to your PC's bluetooth. 
 
 Means that the bluetooth connection with your desk was successful, but for some reason your PC has problems talking to it. Usually, the most common fix is to hold down the bluetooth button you have on the desk handle, until the blue light starts flashing, and then retrying the connection.
 
-- `bltleplug error: <content>` 
+- `bltleplug error: <content>`
 
 This means the applications bluetooth library encountered something it wasn't expecting. If you encounter this, please create an issue with your system and reproduction steps
 
@@ -135,7 +135,7 @@ Prerequisites are `node`, `yarn` and `rust`.
 
 To run the app in developer environment, clone the repo, run `yarn` in the root(to install JS dependencies), and then run `yarn tauri dev`. The app might take a while to build for the first time.
 
-Frontend is using [shadcn/ui](https://ui.shadcn.com/) for styling 
+Frontend is using [shadcn/ui](https://ui.shadcn.com/) for styling
 
 ## Releasing
 
