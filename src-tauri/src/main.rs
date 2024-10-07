@@ -3,17 +3,17 @@
     windows_subsystem = "windows"
 )]
 
-use std::sync::Mutex;
 use loose_idasen::BtError;
+use std::sync::Mutex;
 use tauri_plugin_autostart::MacosLauncher;
 
 use btleplug::platform::Peripheral as PlatformPeripheral;
-use tauri::{GlobalShortcutManager, Window, WindowBuilder};
 use tauri::{async_runtime::block_on, Manager, SystemTray, SystemTrayEvent};
+use tauri::{GlobalShortcutManager, Window, WindowBuilder};
 use window_shadows::set_shadow;
 
-mod desk_mutex;
 mod config_utils;
+mod desk_mutex;
 mod loose_idasen;
 mod tray_utils;
 
@@ -30,29 +30,33 @@ fn has_custom_decorations() -> bool {
 
 pub trait WindowInitUtils {
     fn init_trayasen(self, title: &str, err_msg: &str, init_script: Option<&str>) -> Window;
-} 
+}
 
 impl WindowInitUtils for WindowBuilder<'_> {
     fn init_trayasen(self, title: &str, err_msg: &str, init_script: Option<&str>) -> Window {
         // We want to replace borders only on windows, as on macOS they are pretty enough, and on Linux it's not supported by `window_shadows`
         let mut window_builder = if has_custom_decorations() {
-            self.inner_size(1280.0, 720.0).title(title).always_on_top(true).decorations(false)
+            self.inner_size(1280.0, 720.0)
+                .title(title)
+                .always_on_top(true)
+                .decorations(false)
         } else {
-            self.inner_size(1280.0, 720.0).title(title).always_on_top(true)
+            self.inner_size(1280.0, 720.0)
+                .title(title)
+                .always_on_top(true)
         };
 
         if let Some(init_script) = init_script {
             window_builder = window_builder.initialization_script(init_script);
         }
 
-        let window_instance= window_builder.build().expect(err_msg);
+        let window_instance = window_builder.build().expect(err_msg);
         if has_custom_decorations() {
             set_shadow(&window_instance, true).unwrap();
         }
         window_instance
     }
 }
-
 
 #[tauri::command]
 fn create_new_elem(
@@ -114,7 +118,11 @@ async fn connect_to_desk_by_name(app_handle: tauri::AppHandle, name: String) -> 
         return Err(cached_desk.unwrap_err().to_string());
     }
 
-    println!("cached desk: some:{}, none:{}", cached_desk.is_ok(), cached_desk.is_err());
+    println!(
+        "cached desk: some:{}, none:{}",
+        cached_desk.is_ok(),
+        cached_desk.is_err()
+    );
     desk_mutex::assign_desk_to_mutex(&instantiated_desk, cached_desk);
     println!("Successfuly connected to desk from frontend");
     Ok(())
@@ -130,10 +138,10 @@ fn main() {
     let local_name = &config.local_name;
     block_on(async {
         if let Some(local_name) = local_name.clone() {
-            let cached_desk = loose_idasen::connect_to_desk_by_name_internal(local_name.clone())
-                .await;
+            let cached_desk =
+                loose_idasen::connect_to_desk_by_name_internal(local_name.clone()).await;
 
-                desk_mutex::assign_desk_to_mutex(&initiated_desk, cached_desk);
+            desk_mutex::assign_desk_to_mutex(&initiated_desk, cached_desk);
         }
     });
 
@@ -143,6 +151,16 @@ fn main() {
     let tray = SystemTray::new().with_menu(tray_skeleton);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_autostart::init())
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_autostart::init(
             MacosLauncher::LaunchAgent,
             None,
